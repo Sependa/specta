@@ -83,6 +83,11 @@ void afterEach(id block) {
   [SPTCurrentGroup addAfterEachBlock:block];
 }
 
+void action(id block) {
+  SPTReturnUnlessBlockOrNil(block);
+  [SPTCurrentGroup addActionBlock:block];
+}
+
 void before(id block) {
   beforeEach(block);
 }

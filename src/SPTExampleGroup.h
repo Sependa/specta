@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSMutableArray *afterAllArray;
 @property (nonatomic, strong) NSMutableArray *beforeEachArray;
 @property (nonatomic, strong) NSMutableArray *afterEachArray;
+@property (nonatomic, strong) NSMutableArray *actionArray;
 @property (nonatomic, strong) NSMutableDictionary *sharedExamples;
 @property (nonatomic) unsigned int exampleCount;
 @property (nonatomic) unsigned int ranExampleCount;
@@ -32,6 +33,7 @@
 
 - (void)addBeforeAllBlock:(SPTVoidBlock)block;
 - (void)addAfterAllBlock:(SPTVoidBlock)block;
+- (void)addActionBlock:(SPTVoidBlock)block;
 - (void)addBeforeEachBlock:(SPTVoidBlock)block;
 - (void)addAfterEachBlock:(SPTVoidBlock)block;
 
