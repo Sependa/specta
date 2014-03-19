@@ -80,6 +80,7 @@ typedef NS_ENUM(NSInteger, SPTExampleGroupOrder) {
     self.afterAllArray = [NSMutableArray array];
     self.beforeEachArray = [NSMutableArray array];
     self.afterEachArray = [NSMutableArray array];
+    self.actionArray = [NSMutableArray array];
     self.sharedExamples = [NSMutableDictionary dictionary];
     self.exampleCount = 0;
     self.pendingExampleCount = 0;
@@ -171,6 +172,11 @@ typedef NS_ENUM(NSInteger, SPTExampleGroupOrder) {
 - (void)addAfterEachBlock:(SPTVoidBlock)block {
   if (!block) return;
   [self.afterEachArray addObject:[block copy]];
+}
+
+- (void)addActionBlock:(SPTVoidBlock)block {
+  if (!block) return;
+  [self.actionArray addObject:[block copy]];
 }
 
 - (void)runGlobalBeforeEachHooks:(NSString *)compiledName {
@@ -268,6 +274,21 @@ typedef NS_ENUM(NSInteger, SPTExampleGroupOrder) {
   }
 }
 
+- (void)runActionHooks:(NSString *)compiledName {
+  NSMutableArray *groups = [NSMutableArray array];
+  SPTExampleGroup *group = self;
+  while (group != nil) {
+    [groups addObject:group];
+    group = group.parent;
+  }
+  // run afterEach hooks
+  for(group in groups) {
+    for(id actionBlock in group.actionArray) {
+      runExampleBlock(actionBlock, [NSString stringWithFormat:@"%@ - action block", compiledName]);
+    }
+  }
+}
+
 - (BOOL)isFocusedOrHasFocusedAncestor {
   SPTExampleGroup *ancestor = self;
   while (ancestor != nil) {
@@ -315,6 +336,7 @@ typedef NS_ENUM(NSInteger, SPTExampleGroupOrder) {
         @synchronized(self.root) {
           [self resetRanExampleCountIfNeeded];
           [self runBeforeHooks:compiledName];
+          [self runActionHooks:compiledName];
         }
         @try {
           runExampleBlock(example.block, compiledName);
