@@ -26,6 +26,7 @@ void fdescribe(NSString *name, void (^block)()) {
 void context(NSString *name, void (^block)()) {
   SPTdescribe(name, NO, block);
 }
+
 void fcontext(NSString *name, void (^block)()) {
   SPTdescribe(name, YES, block);
 }
@@ -114,6 +115,16 @@ void SPTitShouldBehaveLike(const char *fileName, NSUInteger lineNumber, NSString
         __block NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] init];
 
         beforeEach(^{
+          NSDictionary *blockData;
+          @try {
+            blockData = dataBlock();
+            [dataDict removeAllObjects];
+            [dataDict addEntriesFromDictionary:blockData];
+          }
+          @catch (id exception) {}
+        });
+
+        action(^{
           NSDictionary *blockData = dataBlock();
           [dataDict removeAllObjects];
           [dataDict addEntriesFromDictionary:blockData];

@@ -283,7 +283,7 @@ typedef NS_ENUM(NSInteger, SPTExampleGroupOrder) {
   }
   // run afterEach hooks
   for(group in groups) {
-    for(id actionBlock in group.actionArray) {
+    for(id actionBlock in [group.actionArray reverseObjectEnumerator]) {
       runExampleBlock(actionBlock, [NSString stringWithFormat:@"%@ - action block", compiledName]);
     }
   }
