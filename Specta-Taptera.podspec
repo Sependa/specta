@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'Specta-Taptera'
-  s.version  = '0.2.3'
+  s.version  = '0.3.0.beta1-taptera'
   s.license  = 'MIT'
   s.summary  = 'A light-weight TDD / BDD framework for Objective-C & Cocoa.'
   s.homepage = 'http://github.com/specta/specta'
