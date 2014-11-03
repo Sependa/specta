@@ -8,20 +8,14 @@ Pod::Spec.new do |s|
 
   s.source   = { :git => 'https://github.com/Taptera/specta.git', :tag => "v#{s.version}-taptera" }
 
-  s.description = %{
-    Specta is a light-weight testing framework for Objective-C and Cocoa that
-    adds RSpec-like DSL to OCUnit. It is super quick and easy to set up, and
-    because it runs on top of OCUnit, it has an excellent Xcode integration and
-    accurate error site reporting. Use your preferred matcher and mocking
-    framework. Expecta and OCMock are recommended.
-  }
-
-  s.source_files = 'src/**/*.{h,m}'
+  s.description = 'Specta is a light-weight testing framework for Objective-C and Cocoa that adds RSpec-like DSL to XCTest.'
+  
+  s.source_files = 'Specta/Specta/**/*.{h,m}'
 
   s.frameworks = 'Foundation', 'XCTest'
 
   s.requires_arc    = true
-  s.ios.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(SDKROOT)/Developer/Library/Frameworks" "$(DEVELOPER_LIBRARY_DIR)/Frameworks"' }
-  s.osx.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(DEVELOPER_LIBRARY_DIR)/Frameworks"' }
+  s.osx.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) $(DEVELOPER_FRAMEWORKS_DIR) "$(PLATFORM_DIR)/Developer/Library/Frameworks" "$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/Library/Frameworks"' }
+  s.ios.xcconfig    = { 'FRAMEWORK_SEARCH_PATHS' => '$(inherited) $(DEVELOPER_FRAMEWORKS_DIR) "$(PLATFORM_DIR)/Developer/Library/Frameworks" "$(DEVELOPER_DIR)/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks"' }
 end
 
