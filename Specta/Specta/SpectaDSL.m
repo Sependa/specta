@@ -50,13 +50,21 @@ void spt_itShouldBehaveLike_(NSString *fileName, NSUInteger lineNumber, NSString
       describe(name, ^{
         __block NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] init];
 
-        beforeEach(^{
-          NSDictionary *blockData = dataBlock();
-          [dataDict removeAllObjects];
-          [dataDict addEntriesFromDictionary:blockData];
+          beforeEach(^{
+            NSDictionary *blockData;
+            @try {
+                blockData = dataBlock();
+                [dataDict removeAllObjects];
+                [dataDict addEntriesFromDictionary:blockData];
+            }
+            @catch (id exception) {}
         });
-
-        block(dataDict);
+          
+        action(^{
+            NSDictionary *blockData = dataBlock();
+            [dataDict removeAllObjects];
+            [dataDict addEntriesFromDictionary:blockData];
+        });
 
         afterAll(^{
           dataDict = nil;
@@ -143,6 +151,11 @@ void beforeEach(void (^block)()) {
 void afterEach(void (^block)()) {
   SPTReturnUnlessBlockOrNil(block);
   [SPTCurrentGroup addAfterEachBlock:block];
+}
+
+void action(id block) {
+    SPTReturnUnlessBlockOrNil(block);
+    [SPTCurrentGroup addActionBlock:block];
 }
 
 void before(void (^block)()) {

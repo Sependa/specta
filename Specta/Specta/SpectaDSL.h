@@ -41,6 +41,8 @@ void afterEach(void (^block)());
 void before(void (^block)());
 void after(void (^block)());
 
+void action(id block);
+
 void sharedExamplesFor(NSString *name, void (^block)(NSDictionary *data));
 void sharedExamples(NSString *name, void (^block)(NSDictionary *data));
 
