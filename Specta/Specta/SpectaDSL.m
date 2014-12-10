@@ -49,23 +49,25 @@ void spt_itShouldBehaveLike_(NSString *fileName, NSUInteger lineNumber, NSString
 
       describe(name, ^{
         __block NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] init];
-
-          beforeEach(^{
-            NSDictionary *blockData;
-            @try {
-                blockData = dataBlock();
-                [dataDict removeAllObjects];
-                [dataDict addEntriesFromDictionary:blockData];
-            }
-            @catch (id exception) {}
-        });
-          
-        action(^{
-            NSDictionary *blockData = dataBlock();
+            
+        beforeEach(^{
+          NSDictionary *blockData;
+          @try {
+            blockData = dataBlock();
             [dataDict removeAllObjects];
             [dataDict addEntriesFromDictionary:blockData];
+          }
+          @catch (id exception) {}
         });
 
+        action(^{
+          NSDictionary *blockData = dataBlock();
+          [dataDict removeAllObjects];
+          [dataDict addEntriesFromDictionary:blockData];
+        });
+        
+        block(dataDict);
+        
         afterAll(^{
           dataDict = nil;
         });
