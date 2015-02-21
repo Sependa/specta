@@ -13,6 +13,10 @@ def execute(command, stdout=nil)
   system(command) or raise "** BUILD FAILED **"
 end
 
+def test(scheme)
+  execute "xcodebuild -workspace #{WORKSPACE} -scheme #{scheme} -configuration #{CONFIGURATION} test SYMROOT=build | xcpretty -c && exit ${PIPESTATUS[0]}"
+end
+
 def build(scheme, sdk, product)
   execute "xcodebuild -workspace #{WORKSPACE} -scheme #{scheme} -sdk #{sdk} -configuration #{CONFIGURATION} SYMROOT=build"
   build_dir = "#{CONFIGURATION}#{sdk == 'macosx' ? '' : "-#{sdk}"}"
@@ -37,6 +41,11 @@ end
 
 def puts_green(str)
   puts "#{GREEN_COLOR}#{str}#{NO_COLOR}"
+end
+
+desc 'Run tests'
+task :test do |t|
+  execute "xcodebuild test -workspace Specta.xcworkspace -scheme Specta"
 end
 
 desc 'clean'
@@ -93,7 +102,7 @@ end
 
 namespace 'templates' do
   install_directory = File.expand_path("~/Library/Developer/Xcode/Templates/File Templates/Specta")
-  templates_directory = File.expand_path("../templates/Specta", __FILE__)
+  templates_directory = File.expand_path("../misc/Specta", __FILE__)
 
   desc "Uninstall Specta templates"
   task :uninstall do
@@ -112,6 +121,16 @@ namespace 'templates' do
 
   desc "Remove and re-install Specta templates"
   task :reinstall => [:uninstall, :install]
+end
+
+namespace 'specs' do
+  task :ios => :clean do |t|
+    test("Specta-iOS")
+  end
+
+  task :osx => :clean do |t|
+    test("Specta")
+  end
 end
 
 task :default => [:build]
