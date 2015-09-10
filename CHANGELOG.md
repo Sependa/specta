@@ -1,3 +1,24 @@
+v1.0.3
+======
+
+* Fixed a retain cycle with example groups [dhardiman]
+
+v1.0.2
+======
+
+* Added a `waitUntilTimeout` function allowing you to run a block with a specific timeout [eunikolsky]
+* Support for Xcode 7 [coverback]
+
+v1.0.1
+======
+
+* Made the framework iOS7 to fix a bug in generating Carthage compatible frameworks [hyperspacemark]
+
+v1.0.0
+======
+
+* Minor cleanup to prepare for the first non-breakable release!
+
 v0.5.0
 =======
 
